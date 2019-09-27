@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.detailMapper">
+    <resultMap id="newsDetail" type="com.pojo.newsDetail">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="author" column="author"/>
+        <result property="createdate" column="createdate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="newsComment" type="com.pojo.newsComment">
+        <id property="id" column="id"/>
+        <result property="newsid" column="newsid"/>
+        <result property="content" column="content"/>
+        <result property="author" column="author"/>
+        <result property="createdate" column="createdate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="searchAll" resultMap="newsDetail">
+        select * from news_detail
+    </select>
+    <select id="searchByTile" resultMap="newsDetail">
+        select * from news_detail where title like "%"#{title}"%"
+    </select>
+    <delete id="deleteById">
+        delete from news_detail where id = #{id}
+    </delete>
+    
+    <insert id="insertOne" >
+        insert into news_comment(newsid,content,author) values (#{newsid},#{content},#{author})
+    </insert>
+    <select id="commentByNewsid" resultMap="newsComment">
+        select * from news_comment where newsid=#{newsid}
+    </select>
+
+    <select id="searchAllNewsid" resultMap="newsComment">
+        select DISTINCT newsid from news_comment
+    </select>
+
+    <select id="commentByNewsid2"  resultMap="newsComment">
+    select * from news_comment
+    <where>
+        <if test="newsid !=0 and newsid !=null">
+            and newsid=#{newsid}
+        </if>
+    </where>
+    order by newsid asc
+    </select>
+</mapper>

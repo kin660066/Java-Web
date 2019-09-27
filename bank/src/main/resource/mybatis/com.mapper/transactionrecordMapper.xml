@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.transactionrecordMapper">
+    <insert id="transfer">
+       insert into transactionrecord(cardNo,transactionAmount,balance,transactionType,transctionDate)
+       values(#{cardNo},#{transactionAmount},#{balance},#{transactionType},#{transctionDate})
+    </insert>
+    <select id="searchRecordByTime" resultType="com.pojo.TransactionRecord">
+        select * from transactionrecord
+        <where>
+            and cardNo = #{cardNo}
+            <if test="start != null and end != null">
+                and transctionDate between #{start} and #{end}
+            </if>
+            <if test="start == null and end != null">
+                and transctionDate &lt;= #{end}
+            </if>
+            <if test="start != null and end == null">
+                and transctionDate >= #{start}
+            </if>
+
+        </where>
+    </select>
+</mapper>

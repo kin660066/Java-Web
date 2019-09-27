@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.accountMapper">
+    <select id="login" resultType="com.pojo.Account">
+        select * from account where cardNo= #{username}
+    </select>
+    <update id="modifyPwd">
+        update account set password=#{pwd} where cardNo=#{username}
+    </update>
+    <select id="exitsCard" resultType="integer">
+        select count(*) from account where cardNo=#{inCard}
+    </select>
+    <select id="moneyEnough" resultType="integer">
+       select count(*) from account where cardNo=#{outCard} and balance >= #{money}
+    </select>
+    <select id="frozenCard" resultType="integer">
+        select count(*) from account where cardNo=#{inCard} and status=1
+    </select>
+    <update id="inMoney">
+        update account set balance=balance+#{money} where cardNo=#{inCard}
+    </update>
+    <update id="outMoney">
+         update account set balance=balance-#{money} where cardNo=#{outCard}
+    </update>
+    <select id="searchBalance" resultType="double">
+        select balance from account where cardNo=#{cardNo}
+    </select>
+</mapper>
